@@ -29,34 +29,9 @@ public class StudentRestController {
 
     @GetMapping("/students/{studentId}")
     public Student getStudentById(@PathVariable int studentId) {
-
         if((studentId) >= students.size() || studentId < 0)
             throw new StudentNotFoundException("Student not found " + studentId);
         return students.get(studentId);
     }
 
-    // Add an exception handler using @ExceptionHandler
-
-    @ExceptionHandler
-    public ResponseEntity<StudentErrorResponse> handleException(StudentNotFoundException exc) {
-        StudentErrorResponse errorResponse = new StudentErrorResponse();
-        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
-        errorResponse.setMessage(exc.getMessage());
-        errorResponse.setTimeStamp(System.currentTimeMillis());
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-    }
-
-
-    // Add exception handler for catching all exceptions
-
-    @ExceptionHandler
-    public ResponseEntity<StudentErrorResponse> handleAllExceptions(Exception exc) {
-        StudentErrorResponse errorResponse = new StudentErrorResponse();
-        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
-        errorResponse.setMessage(exc.getMessage());
-        errorResponse.setTimeStamp(System.currentTimeMillis());
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
 }
